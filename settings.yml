@@ -1,0 +1,7 @@
+extend_content_security_policy:
+  type: list
+  default: "script_src: https://checkoutpage.co/js/overlay.js"
+svg_icons:
+  default: "shopping-cart"
+  type: "list"
+  list_type: "compact"
