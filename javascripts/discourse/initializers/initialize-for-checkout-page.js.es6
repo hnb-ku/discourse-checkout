@@ -1,4 +1,5 @@
 import { iconHTML } from "discourse-common/lib/icon-library";
+import { escapeExpression } from "discourse/lib/utilities";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import loadScript from "discourse/lib/load-script";
 
@@ -22,22 +23,19 @@ export default {
           // no, bail.
           if (!checkoutWraps.length) return;
           // yes, loop through them
-          for (let i = 0; i < checkoutWraps.length; ++i) {
-            const wrap = checkoutWraps[i];
+          checkoutWraps.forEach(wrap => {
+            // create a button
             const button = document.createElement("button");
-
-            // give it some classes. cp-button is required by checkoutpage
+            // give it some classes. cp-button is required by checkoutPage
             button.classList.add("btn", "btn-primary", "cp-button");
             // inherit some properties from the wrap
-            button.dataset.checkout = wrap.dataset.checkout;
-            button.dataset.seller = wrap.dataset.seller;
-
+            button.dataset.checkout = escapeExpression(wrap.dataset.checkout);
+            button.dataset.seller = escapeExpression(wrap.dataset.seller);
             // set the button contents
-            button.innerHTML = buttonIcon + wrap.textContent.trim();
-
+            button.innerHTML = buttonIcon + escapeExpression(wrap.textContent);
             // replace the wrap with the button
             postElem.replaceChild(button, wrap);
-          }
+          });
         },
         { id: "discourse-checkout" } // give the decorator an id
       );
